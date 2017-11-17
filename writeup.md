@@ -163,7 +163,7 @@ Finally, the following is the image capturing the result of clustering that show
 
 #### 3. Complete Exercise 3 Steps.  Features extracted and SVM trained.  Object recognition implemented.
 
-Next up in the perception pipeline is the process of object recognition. This is done by first obtaining training features and training the model in the Exercise 3 project. Several notable functions are `compute_color_histograms()` and `compute_normal_histograms()`. Both of them are using the HSV color system and 16 bins of histogram feature. Here are how the functions are defined under `features.py`:
+Next up in the perception pipeline is the process of object recognition. This is done by first obtaining training features and training the model in the Exercise 3 project. Several notable functions are `compute_color_histograms()` and `compute_normal_histograms()`. Both of them are using the 16 bins of normalized histogram feature. What differs is that one of them returns HSV histogram while the other one returns RGB histogram. Here are how the functions are defined under `features.py`:
 
 ```python
 def compute_color_histograms(cloud, using_hsv=False):
@@ -223,12 +223,12 @@ def compute_normal_histograms(normal_cloud):
     nbins = 16
     bins_range = (0, 256)
 
-    h_hist = np.histogram(norm_x_vals, nbins, bins_range)
-    s_hist = np.histogram(norm_y_vals, nbins, bins_range)
-    v_hist = np.histogram(norm_z_vals, nbins, bins_range)
+    r_hist = np.histogram(norm_x_vals, nbins, bins_range)
+    g_hist = np.histogram(norm_y_vals, nbins, bins_range)
+    b_hist = np.histogram(norm_z_vals, nbins, bins_range)
 
     # TODO: Concatenate and normalize the histograms
-    hist_features = np.concatenate((h_hist[0], s_hist[0], v_hist[0])).astype(np.float64)
+    hist_features = np.concatenate((r_hist[0], g_hist[0], b_hist[0])).astype(np.float64)
     normed_features = hist_features / np.sum(hist_features)
 
     # Generate random features for demo mode.  
