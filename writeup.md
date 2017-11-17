@@ -2,7 +2,7 @@
 [//]: # (Image References)
 
 [confusion-matrix-unnormalized]: ./misc_images/confusion-matrix-unnormed.png
-[confusion-matris-normalized]: ./misc_images/confusion-matrix-normed.png
+[confusion-matrix-normalized]: ./misc_images/confusion-matrix-normed.png
 [train-svm-result]: ./misc_images/train-svm-result.png
 [pr2-point-cloud]: ./misc_images/pr2-point-cloud.png
 [pass-through-filtering]: ./misc_images/pass-through-filtering.png
