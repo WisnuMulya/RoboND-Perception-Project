@@ -448,10 +448,10 @@ In conclusion, here are the perception pipeline methods that are implemented in 
 - RANSAC place segmentation with 1 centimeter maximum distance parameter
 - Euclidean clustering
 - Object recognition:
- - Linear Kernel SVM model
- - 100 poses per object for training features
- - Normalized HSV histogram with 16 bins for one feature
- - Normalized RGB histogram with 16 bins for another feature
+  - Linear Kernel SVM model
+  - 100 poses per object for training features
+  - Normalized HSV histogram with 16 bins for one feature
+  - Normalized RGB histogram with 16 bins for another feature
 
 For future improvement, a feature other than color properties might be useful for object recognition, such as shape feature by analyzing the distribution of surface normals.
 
