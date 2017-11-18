@@ -451,7 +451,7 @@ In conclusion, here are the perception pipeline methods that are implemented in 
   - RBF Kernel SVM model
   - 100 poses per object for training features
   - Normalized HSV histogram with 16 bins for one feature
-  - Normalized RGB histogram with 16 bins for another feature
+  - Normalized surface normals histogram with 16 bins for another feature
 
 For future improvement, the code should publish a point cloud for 3D collision map, so that the robot would avoid collision to certain objects in the scene. Also, the code should be able to publish a value to make the robot rotates, so that it would recognize all the collision objects, like the side tables, in the scene.
 
