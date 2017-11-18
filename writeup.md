@@ -163,7 +163,7 @@ Finally, the following is the image capturing the result of clustering that show
 
 #### 3. Complete Exercise 3 Steps.  Features extracted and SVM trained.  Object recognition implemented.
 
-Next up in the perception pipeline is the process of object recognition. This is done by first obtaining training features and training the model in the Exercise 3 project. Several notable functions are `compute_color_histograms()` and `compute_normal_histograms()`. Both of them are using the 16 bins of normalized histogram feature. What differs is that one of them returns HSV histogram while the other one returns RGB histogram. Here are how the functions are defined under `features.py`:
+Next up in the perception pipeline is the process of object recognition. This is done by first obtaining training features and training the model in the Exercise 3 project. Several notable functions are `compute_color_histograms()` and `compute_normal_histograms()`. Both of them are using the 16 bins of normalized histogram feature. What differs is that one of them returns HSV histogram while the other one returns surface normals histogram. Here are how the functions are defined under `features.py`:
 
 ```python
 def compute_color_histograms(cloud, using_hsv=False):
@@ -223,12 +223,12 @@ def compute_normal_histograms(normal_cloud):
     nbins = 16
     bins_range = (0, 256)
 
-    r_hist = np.histogram(norm_x_vals, nbins, bins_range)
-    g_hist = np.histogram(norm_y_vals, nbins, bins_range)
-    b_hist = np.histogram(norm_z_vals, nbins, bins_range)
+    x_hist = np.histogram(norm_x_vals, nbins, bins_range)
+    y_hist = np.histogram(norm_y_vals, nbins, bins_range)
+    z_hist = np.histogram(norm_z_vals, nbins, bins_range)
 
     # TODO: Concatenate and normalize the histograms
-    hist_features = np.concatenate((r_hist[0], g_hist[0], b_hist[0])).astype(np.float64)
+    hist_features = np.concatenate((x_hist[0], y_hist[0], z_hist[0])).astype(np.float64)
     normed_features = hist_features / np.sum(hist_features)
 
     # Generate random features for demo mode.  
@@ -364,7 +364,7 @@ def pr2_mover(object_list):
     dict_list = []
     labels = []
     centroids = [] # to be list of tuples (x, y, z)
-    yaml_filename = 'output_3.yaml'
+    yaml_filename = 'output_{}.yaml'.format(test_scene_num.data)
 
     # TODO: Get/Read parameters
     object_list_param = rospy.get_param('/object_list')
@@ -375,9 +375,9 @@ def pr2_mover(object_list):
         labels.append(object.label)
         points_arr = ros_to_pcl(object.cloud).to_array()
         centroid = np.mean(points_arr, axis=0)
-        centroids.append([np.asscalar(centroid[0]),
+        centroids.append((np.asscalar(centroid[0]),
                           np.asscalar(centroid[1]),
-                          np.asscalar(centroid[2])])
+                          np.asscalar(centroid[2])))
 
     # TODO: Rotate PR2 in place to capture side tables for the collision map
 
@@ -448,10 +448,12 @@ In conclusion, here are the perception pipeline methods that are implemented in 
 - RANSAC place segmentation with 1 centimeter maximum distance parameter
 - Euclidean clustering
 - Object recognition:
-  - Linear Kernel SVM model
+  - RBF Kernel SVM model
   - 100 poses per object for training features
   - Normalized HSV histogram with 16 bins for one feature
   - Normalized RGB histogram with 16 bins for another feature
 
-For future improvement, a feature other than color properties might be useful for object recognition, such as shape feature by analyzing the distribution of surface normals.
+For future improvement, the code should publish a point cloud for 3D collision map, so that the robot would avoid collision to certain objects in the scene. Also, the code should be able to publish a value to make the robot rotates, so that it would recognize all the collision objects, like the side tables, in the scene.
+
+Further, the code should also be able to adjust the place pose after placing each object, so that the next object placed in the dropbox would not stack on top of each other and risk falling out of the dropbox.
 
