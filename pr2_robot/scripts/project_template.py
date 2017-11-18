@@ -219,7 +219,7 @@ def pr2_mover(object_list):
     dict_list = []
     labels = []
     centroids = [] # to be list of tuples (x, y, z)
-    yaml_filename = 'output_3.yaml'
+    yaml_filename = 'output_{}.yaml'.format(test_scene_num.data)
 
     # TODO: Get/Read parameters
     object_list_param = rospy.get_param('/object_list')
@@ -230,9 +230,9 @@ def pr2_mover(object_list):
         labels.append(object.label)
         points_arr = ros_to_pcl(object.cloud).to_array()
         centroid = np.mean(points_arr, axis=0)
-        centroids.append([np.asscalar(centroid[0]),
+        centroids.append((np.asscalar(centroid[0]),
                           np.asscalar(centroid[1]),
-                          np.asscalar(centroid[2])])
+                          np.asscalar(centroid[2])))
 
     # TODO: Rotate PR2 in place to capture side tables for the collision map
 
